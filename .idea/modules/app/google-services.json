@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "315045359419",
+    "firebase_url": "https://orderfoodappkotlin.firebaseio.com",
+    "project_id": "orderfoodappkotlin",
+    "storage_bucket": "orderfoodappkotlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315045359419:android:805ba52e6de6c86fa7511e",
+        "android_client_info": {
+          "package_name": "com.ganarstudio.orderfoodappkotlin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315045359419-rbam79a4e6e0f6ebvdjihgi6jdm5o6tf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ganarstudio.orderfoodappkotlin",
+            "certificate_hash": "48d641951ba84155b9bd6867749e04dcedea1390"
+          }
+        },
+        {
+          "client_id": "315045359419-sig64lnknvsa1dulgrooqidfsbgo7941.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfsG5wj2t9iZxTUTh2iuTub-mm1B-58Mc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315045359419-sig64lnknvsa1dulgrooqidfsbgo7941.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
