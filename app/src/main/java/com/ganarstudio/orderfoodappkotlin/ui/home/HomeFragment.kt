@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.asksira.loopingviewpager.LoopingViewPager
+import com.ganarstudio.orderfoodappkotlin.Adapter.MyBestDealsAdapter
 import com.ganarstudio.orderfoodappkotlin.Adapter.MyPopularCategoriesAdapter
 import com.ganarstudio.orderfoodappkotlin.R
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -21,7 +23,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
 
-    var recyclerView: RecyclerView? = null
+    var recyclerView: RecyclerView ?= null
+    var viewPager:LoopingViewPager ?= null
 
     var unbinder:Unbinder ?= null
 
@@ -35,7 +38,6 @@ class HomeFragment : Fragment() {
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        unbinder = ButterKnife.bind(this,root)
         initView(root)
         //bind data
         homeViewModel.popularList.observe(this, Observer {
@@ -43,14 +45,28 @@ class HomeFragment : Fragment() {
             val adapter = MyPopularCategoriesAdapter(context!!, listData)
             recyclerView!!.adapter = adapter
         })
-
+        homeViewModel.bestDeaList.observe(this, Observer {
+            val adapter = MyBestDealsAdapter(context!!, it, false)
+            viewPager!!.adapter = adapter
+        })
         return root
     }
 
     private fun initView(root: View) {
+        viewPager = root.findViewById(R.id.viewpager) as LoopingViewPager
         recyclerView = root.findViewById(R.id.recycler_popular) as RecyclerView
         recyclerView!!.setHasFixedSize(true)
         recyclerView!!.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewPager!!.resumeAutoScroll()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewPager!!.pauseAutoScroll()
     }
 }
