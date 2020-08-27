@@ -34,14 +34,12 @@ class MyPopularCategoriesAdapter (internal var context:Context,
 
     inner class MyViewHolder (itemView:View) : RecyclerView.ViewHolder(itemView){
 
-        @BindView(R.id.txt_category_name)
         var category_name:TextView ?= null
-        @BindView(R.id.category_image)
         var category_image: CircleImageView? = null
 
-        var unbinder:Unbinder
         init {
-            unbinder = ButterKnife.bind(this, itemView)
+            category_name = itemView.findViewById(R.id.txt_category_name) as TextView
+            category_image = itemView.findViewById(R.id.category_image) as CircleImageView
         }
 
     }
