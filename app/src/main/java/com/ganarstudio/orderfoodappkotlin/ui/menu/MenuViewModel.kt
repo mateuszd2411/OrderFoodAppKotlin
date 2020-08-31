@@ -1,13 +1,33 @@
 package com.ganarstudio.orderfoodappkotlin.ui.menu
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ganarstudio.orderfoodappkotlin.Callback.ICategoryCallbackListener
+import com.ganarstudio.orderfoodappkotlin.Model.CategoryModel
 
-class MenuViewModel : ViewModel() {
+class MenuViewModel : ViewModel(), ICategoryCallbackListener {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is Categories Fragment"
+    override fun onCategoryLoadSuccess(categoriesList: List<CategoryModel>) {
+        categoriesListMutable?.value = categoriesList
     }
-    val text: LiveData<String> = _text
+
+    override fun onCategoryLoadFailed(message: String) {
+        messageError.value = message
+    }
+
+    private var categoriesListMutable: MutableLiveData<List<CategoryModel>>? = null
+    private var messageError: MutableLiveData<String> = MutableLiveData()
+    private val categoryCallBackListener: ICategoryCallbackListener
+
+    init {
+        categoryCallBackListener = this
+    }
+
+    fun getCategoryList(): MutableLiveData<List<CategoryModel>> {
+        if (categoriesListMutable == null) {
+
+        }
+        return  categoriesListMutable!!
+    }
+
 }
