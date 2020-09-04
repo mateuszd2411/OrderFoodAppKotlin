@@ -30,9 +30,14 @@ class MenuViewModel : ViewModel(), ICategoryCallbackListener {
 
     fun getCategoryList(): MutableLiveData<List<CategoryModel>> {
         if (categoriesListMutable == null) {
+            categoriesListMutable = MutableLiveData()
             loadCategory()
         }
         return  categoriesListMutable!!
+    }
+
+    fun getMessageError(): MutableLiveData<String> {
+        return messageError
     }
 
     private fun loadCategory() {
