@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ganarstudio.orderfoodappkotlin.Callback.IRecyclerItemClickListener
 import com.ganarstudio.orderfoodappkotlin.Common.Common
 import com.ganarstudio.orderfoodappkotlin.Model.CategoryModel
 import com.ganarstudio.orderfoodappkotlin.R
@@ -41,14 +42,27 @@ class MyCategoriesAdapter (internal var context: Context,
         }
     }
 
-    inner class MyViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class MyViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
 
+        override fun onClick(view: View?) {
+            listener!!.onItemClick(view!!, adapterPosition)
+
+        }
         var category_name: TextView?= null
+
         var category_image: ImageView? = null
+
+        internal var listener: IRecyclerItemClickListener? = null
+
+        fun setListener(listener: IRecyclerItemClickListener) {
+            this.listener = listener
+        }
 
         init {
             category_name = itemView.findViewById(R.id.category_name) as TextView
             category_image = itemView.findViewById(R.id.category_image) as ImageView
+            itemView.setOnClickListener (this)
         }
 
     }
