@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ganarstudio.orderfoodappkotlin.Callback.IRecyclerItemClickListener
 import com.ganarstudio.orderfoodappkotlin.Common.Common
+import com.ganarstudio.orderfoodappkotlin.EventBus.CategoryClick
 import com.ganarstudio.orderfoodappkotlin.Model.CategoryModel
 import com.ganarstudio.orderfoodappkotlin.R
+import org.greenrobot.eventbus.EventBus
 
 class MyCategoriesAdapter (internal var context: Context,
                            internal var categoriesList: List<CategoryModel>) :
@@ -21,6 +23,15 @@ class MyCategoriesAdapter (internal var context: Context,
         Glide.with(context).load(categoriesList.get(position).image)
             .into(holder.category_image!!)
         holder.category_name!!.setText(categoriesList.get(position).name)
+
+        //Event
+        holder.setListener(object :IRecyclerItemClickListener{
+            override fun onItemClick(view: View, pos: Int) {
+                Common.categorySelected = categoriesList.get(pos)
+                EventBus.getDefault().postSticky(CategoryClick(true,categoriesList.get(pos)))
+            }
+
+        })
     }
 
     override fun onCreateViewHolder(
