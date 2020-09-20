@@ -74,7 +74,8 @@ class HomeActivity : AppCompatActivity() {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onCategorySelecteg(event: CategoryClick) {
         if (event.isSuccess) {
-            Toast.makeText(this, "Click to " + event.category.name, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Click to " + event.category.name, Toast.LENGTH_SHORT).show()
+            findNavController(R.id.nav_host_fragment).navigate(R.id.nav_food_list)
         }
     }
 }
