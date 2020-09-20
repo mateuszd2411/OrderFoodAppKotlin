@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LayoutAnimationController
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ganarstudio.orderfoodappkotlin.Adapter.MyFoodListAdapter
+import com.ganarstudio.orderfoodappkotlin.Common.Common
 import com.ganarstudio.orderfoodappkotlin.R
 
 class FoodListFragment : Fragment() {
@@ -46,7 +48,10 @@ class FoodListFragment : Fragment() {
         recycler_food_list!!.setHasFixedSize(true)
         recycler_food_list!!.layoutManager = LinearLayoutManager(context)
 
-        layoutAnimationController = AnimationUtils.loadLayoutAnimation(context,R.anim.layout_item_from_left)
+        layoutAnimationController =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_item_from_left)
+
+        (activity as AppCompatActivity).supportActionBar!!.title = Common.categorySelected!!.name
     }
 
 }
