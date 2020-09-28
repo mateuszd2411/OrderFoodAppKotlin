@@ -1,9 +1,11 @@
 package com.ganarstudio.orderfoodappkotlin.Common
 
 import com.ganarstudio.orderfoodappkotlin.Model.CategoryModel
+import com.ganarstudio.orderfoodappkotlin.Model.FoodModel
 import com.ganarstudio.orderfoodappkotlin.Model.UserModel
 
 object Common {
+    var foodSelected: FoodModel ?= null
     var categorySelected: CategoryModel ?= null
     val CATEGORY_REF: String = "Category"
     val FULL_WIDTH_COLUMN: Int = 1

@@ -9,8 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ganarstudio.orderfoodappkotlin.Callback.IRecyclerItemClickListener
+import com.ganarstudio.orderfoodappkotlin.Common.Common
+import com.ganarstudio.orderfoodappkotlin.EventBus.FoodItemClick
 import com.ganarstudio.orderfoodappkotlin.Model.FoodModel
 import com.ganarstudio.orderfoodappkotlin.R
+import org.greenrobot.eventbus.EventBus
 
 class MyFoodListAdapter(
     internal var context: Context,
@@ -23,6 +26,15 @@ class MyFoodListAdapter(
             .into(holder.img_food_image!!)
         holder.txt_food_name!!.setText(foodList.get(position).name)
         holder.txt_food_price!!.setText(foodList.get(position).price.toString())
+
+        //Event
+        holder.setListener(object : IRecyclerItemClickListener {
+            override fun onItemClick(view: View, pos: Int) {
+                Common.foodSelected = foodList.get(pos)
+                EventBus.getDefault().postSticky(FoodItemClick(true, foodList.get(pos)))
+            }
+
+        })
     }
 
     override fun onCreateViewHolder(

@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.ganarstudio.orderfoodappkotlin.EventBus.CategoryClick
+import com.ganarstudio.orderfoodappkotlin.EventBus.FoodItemClick
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -75,6 +76,13 @@ class HomeActivity : AppCompatActivity() {
     fun onCategorySelecteg(event: CategoryClick) {
         if (event.isSuccess) {
             //Toast.makeText(this, "Click to " + event.category.name, Toast.LENGTH_SHORT).show()
+            findNavController(R.id.nav_host_fragment).navigate(R.id.nav_food_list)
+        }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun onFoodSelected(event: FoodItemClick) {
+        if (event.isSuccess) {
             findNavController(R.id.nav_host_fragment).navigate(R.id.nav_food_list)
         }
     }
