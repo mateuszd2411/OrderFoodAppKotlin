@@ -2,7 +2,6 @@ package com.ganarstudio.orderfoodappkotlin
 
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -42,7 +41,7 @@ class HomeActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_menu, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_menu, R.id.nav_food_detail
                 //,R.id.nav_tools, R.id.nav_share, R.id.nav_send
             ), drawerLayout
         )
@@ -73,7 +72,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    fun onCategorySelecteg(event: CategoryClick) {
+    fun onCategorySelected(event: CategoryClick) {
         if (event.isSuccess) {
             //Toast.makeText(this, "Click to " + event.category.name, Toast.LENGTH_SHORT).show()
             findNavController(R.id.nav_host_fragment).navigate(R.id.nav_food_list)
@@ -83,7 +82,7 @@ class HomeActivity : AppCompatActivity() {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun onFoodSelected(event: FoodItemClick) {
         if (event.isSuccess) {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.nav_food_list)
+            findNavController(R.id.nav_host_fragment).navigate(R.id.nav_food_detail)
         }
     }
 }
