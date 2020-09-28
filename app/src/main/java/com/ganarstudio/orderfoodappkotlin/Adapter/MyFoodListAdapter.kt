@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ganarstudio.orderfoodappkotlin.Callback.IRecyclerItemClickListener
 import com.ganarstudio.orderfoodappkotlin.Model.FoodModel
 import com.ganarstudio.orderfoodappkotlin.R
 
@@ -37,7 +38,12 @@ class MyFoodListAdapter(
         return foodList.size
     }
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+        View.OnClickListener {
+
+        override fun onClick(view: View?) {
+            listener!!.onItemClick(view!!, adapterPosition)
+        }
 
         var txt_food_name: TextView? = null
         var txt_food_price: TextView? = null
@@ -46,12 +52,19 @@ class MyFoodListAdapter(
         var img_fav: ImageView? = null
         var img_cart: ImageView? = null
 
+        internal var listener: IRecyclerItemClickListener? = null
+
+        fun setListener(listener: IRecyclerItemClickListener) {
+            this.listener = listener
+        }
+
         init {
             txt_food_name = itemView.findViewById(R.id.txt_food_name) as TextView
             txt_food_price = itemView.findViewById(R.id.txt_food_price) as TextView
             img_food_image = itemView.findViewById(R.id.img_food_image) as ImageView
             img_cart = itemView.findViewById(R.id.img_quick_cart) as ImageView
             img_fav = itemView.findViewById(R.id.img_fav) as ImageView
+            itemView.setOnClickListener (this)
         }
 
     }
