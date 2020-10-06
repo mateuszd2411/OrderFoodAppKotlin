@@ -12,10 +12,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.andremion.counterfab.CounterFab
 import com.bumptech.glide.Glide
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+import com.ganarstudio.orderfoodappkotlin.Common.Common
 import com.ganarstudio.orderfoodappkotlin.Model.CommentModel
 import com.ganarstudio.orderfoodappkotlin.Model.FoodModel
 import com.ganarstudio.orderfoodappkotlin.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.database.ServerValue
 import kotlinx.android.synthetic.main.fragment_food_detail.*
 import java.lang.StringBuilder
 
@@ -50,7 +52,7 @@ class FoodDetailFragment : Fragment() {
     }
 
     private fun displayInfo(it: FoodModel?) {
-        Glide.with(context!!).load(it!!.image).into(img_food!!)
+        Glide.with(requireContext()).load(it!!.image).into(img_food!!)
         food_name!!.text = StringBuilder(it!!.name!!)
         food_description!!.text = StringBuilder(it!!.description!!)
         //food_price!!.text = StringBuilder(it!!.price!!.toString())
@@ -75,7 +77,7 @@ class FoodDetailFragment : Fragment() {
     }
 
     private fun showDialogRating() {
-        var builder = AlertDialog.Builder(context!!)
+        var builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Rating Food")
         builder.setMessage("Please fill information")
 
@@ -90,6 +92,15 @@ class FoodDetailFragment : Fragment() {
 
         builder.setPositiveButton("OK"){dialogInterface, i ->
             val  commentModel = CommentModel()
+            commentModel.name = Common.currentUser!!.name
+            commentModel.uid = Common.currentUser!!.uid
+            commentModel.comment = edit_comment.text.toString()
+            commentModel.ratingValue = ratingBar.rating
+            val serverTimeStamp = HashMap<String, Any>()
+            serverTimeStamp["timeStamp"] = ServerValue.TIMESTAMP
+            commentModel.commentTimeStamp = (serverTimeStamp)
+
+            foodDetailViewModel!!.setCommentModel(commentModel)
         }
 
         val dialog = builder.create()
