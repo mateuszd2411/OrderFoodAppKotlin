@@ -1,19 +1,18 @@
 package com.ganarstudio.orderfoodappkotlin.ui.fooddetail
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.andremion.counterfab.CounterFab
 import com.bumptech.glide.Glide
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
+import com.ganarstudio.orderfoodappkotlin.Model.CommentModel
 import com.ganarstudio.orderfoodappkotlin.Model.FoodModel
 import com.ganarstudio.orderfoodappkotlin.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -76,6 +75,24 @@ class FoodDetailFragment : Fragment() {
     }
 
     private fun showDialogRating() {
+        var builder = AlertDialog.Builder(context!!)
+        builder.setTitle("Rating Food")
+        builder.setMessage("Please fill information")
 
+        val itemView = LayoutInflater.from(context).inflate(R.layout.layout_rating_comment, null)
+
+        val ratingBar = itemView.findViewById<RatingBar>(R.id.ratingBar)
+        val edit_comment = itemView.findViewById<EditText>(R.id.edit_comment)
+
+        builder.setView(itemView)
+
+        builder.setNeutralButton("CANCEL"){dialogInterface, i -> dialogInterface.dismiss() }
+
+        builder.setPositiveButton("OK"){dialogInterface, i ->
+            val  commentModel = CommentModel()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }
