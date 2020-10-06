@@ -67,5 +67,15 @@ class FoodDetailFragment : Fragment() {
         number_button = root!!.findViewById(R.id.number_button) as ElegantNumberButton
         ratingBar = root!!.findViewById(R.id.ratingBar) as RatingBar
         btnShowComment = root!!.findViewById(R.id.btnShowComment) as Button
+
+
+        //Event
+        btnRating!!.setOnClickListener {
+            showDialogRating()
+        }
+    }
+
+    private fun showDialogRating() {
+
     }
 }
