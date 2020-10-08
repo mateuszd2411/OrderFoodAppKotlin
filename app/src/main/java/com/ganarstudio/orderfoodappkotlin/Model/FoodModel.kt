@@ -9,4 +9,7 @@ class FoodModel {
     var price: Long = 0
     var addon: List<AddonModel>?=ArrayList<AddonModel>()
     var size: List<SizeModel>? = ArrayList<SizeModel>()
+
+    var ratingValue:Double = 0.toDouble()
+    var ratingCount:Long = 0.toLong()
 }

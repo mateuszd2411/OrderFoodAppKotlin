@@ -87,8 +87,36 @@ class FoodDetailFragment : Fragment() {
                     Toast.makeText(context!!,""+error.message,Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onDataChange(snapshot: DataSnapshot) {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        val foodModel = dataSnapshot.getValue(FoodModel::class.java)
+                        foodModel!!.key = Common.foodSelected!!.key
+                        //Apply rating
+                        val sumRating = foodModel.ratingValue + ratingValue
+                        val ratingCount = foodModel.ratingCount + 1
+                        val  result = sumRating/ratingCount
 
+                        val updateData = HashMap<String, Any>()
+                        updateData["ratingValue"] = result
+                        updateData["ratingCount"] = ratingCount
+
+                        //Update data in variable
+                        foodModel.ratingCount = ratingCount
+                        foodModel.ratingValue = result
+
+                        dataSnapshot.ref
+                            .updateChildren(updateData)
+                            .addOnCompleteListener { task ->
+                                waitingDialog!!.dismiss()
+                                if (task.isSuccessful) {
+                                    Common.foodSelected = foodModel
+                                    foodDetailViewModel!!.setFoodModel(foodModel)
+                                }
+                            }
+
+                    } else {
+                        waitingDialog!!.dismiss()
+                    }
                 }
 
             })
