@@ -17,7 +17,8 @@ import com.ganarstudio.orderfoodappkotlin.Model.CommentModel
 import com.ganarstudio.orderfoodappkotlin.Model.FoodModel
 import com.ganarstudio.orderfoodappkotlin.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.database.ServerValue
+import com.google.firebase.database.*
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.fragment_food_detail.*
 import java.lang.StringBuilder
 
@@ -35,6 +36,8 @@ class FoodDetailFragment : Fragment() {
     private var ratingBar: RatingBar? = null
     private var btnShowComment: Button? = null
 
+    private var waitingDialog: AlertDialog? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,10 +48,50 @@ class FoodDetailFragment : Fragment() {
             ViewModelProviders.of(this).get(FoodDetailViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_food_detail, container, false)
         initView(root)
+
         foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
             displayInfo(it)
         })
+
+        foodDetailViewModel.getMutableLiveDataComment().observe(viewLifecycleOwner, Observer {
+            submitRatingToFirebase(it)
+        })
         return root
+    }
+
+    private fun submitRatingToFirebase(commentModel: CommentModel?) {
+        waitingDialog!!.show()
+
+        //First, we will submit to Comment Ref
+        FirebaseDatabase.getInstance()
+            .getReference(Common.COMMENT_REF)
+            .child(Common.foodSelected!!.id!!)
+            .push()
+            .setValue(commentModel)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    addRatingToFood(commentModel!!.ratingValue)
+                }
+                waitingDialog!!.dismiss()
+            }
+    }
+
+    private fun addRatingToFood(ratingValue: Any) {
+        FirebaseDatabase.getInstance()
+            .getReference(Common.categorySelected!!.menu_id!!)  //select menu in category
+            .child("foods") //Select foods array
+            .child(Common.foodSelected!!.key!!)   //Select key
+            .addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onCancelled(error: DatabaseError) {
+                    waitingDialog!!.dismiss()
+                    Toast.makeText(context!!,""+error.message,Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                }
+
+            })
     }
 
     private fun displayInfo(it: FoodModel?) {
@@ -59,6 +102,9 @@ class FoodDetailFragment : Fragment() {
     }
 
     private fun initView(root: View?) {
+
+        waitingDialog = SpotsDialog.Builder().setContext(requireContext()).setCancelable(false).build()
+
         btnCart = root!!.findViewById(R.id.btnCart) as CounterFab
         img_food = root!!.findViewById(R.id.img_food) as ImageView
         btnRating = root!!.findViewById(R.id.btn_rating) as FloatingActionButton

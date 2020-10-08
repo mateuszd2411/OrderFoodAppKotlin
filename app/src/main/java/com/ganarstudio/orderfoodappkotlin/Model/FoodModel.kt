@@ -1,6 +1,7 @@
 package com.ganarstudio.orderfoodappkotlin.Model
 
 class FoodModel {
+    var key: String? = null
     var name: String? = null
     var image: String? = null
     var id: String? = null
