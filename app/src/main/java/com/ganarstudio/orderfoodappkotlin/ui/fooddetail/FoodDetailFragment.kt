@@ -70,15 +70,16 @@ class FoodDetailFragment : Fragment() {
             .setValue(commentModel)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    addRatingToFood(commentModel!!.ratingValue)
+                    addRatingToFood(commentModel!!.ratingValue.toDouble())
                 }
                 waitingDialog!!.dismiss()
             }
     }
 
-    private fun addRatingToFood(ratingValue: Any) {
+    private fun addRatingToFood(ratingValue: Double) {
         FirebaseDatabase.getInstance()
-            .getReference(Common.categorySelected!!.menu_id!!)  //select menu in category
+            .getReference(Common.CATEGORY_REF)  //select category
+            .child(Common.categorySelected!!.menu_id!!)  //select menu in category
             .child("foods") //Select foods array
             .child(Common.foodSelected!!.key!!)   //Select key
             .addListenerForSingleValueEvent(object :ValueEventListener{
@@ -92,7 +93,7 @@ class FoodDetailFragment : Fragment() {
                         val foodModel = dataSnapshot.getValue(FoodModel::class.java)
                         foodModel!!.key = Common.foodSelected!!.key
                         //Apply rating
-                        val sumRating = foodModel.ratingValue + ratingValue
+                        val sumRating = foodModel.ratingValue!!.toDouble() + (ratingValue)
                         val ratingCount = foodModel.ratingCount + 1
                         val  result = sumRating/ratingCount
 
@@ -111,6 +112,7 @@ class FoodDetailFragment : Fragment() {
                                 if (task.isSuccessful) {
                                     Common.foodSelected = foodModel
                                     foodDetailViewModel!!.setFoodModel(foodModel)
+                                    Toast.makeText(context!!,"Thank you",Toast.LENGTH_SHORT).show()
                                 }
                             }
 
@@ -127,6 +129,8 @@ class FoodDetailFragment : Fragment() {
         food_name!!.text = StringBuilder(it!!.name!!)
         food_description!!.text = StringBuilder(it!!.description!!)
         //food_price!!.text = StringBuilder(it!!.price!!.toString())
+
+        ratingBar!!.rating = it!!.ratingValue.toFloat()
     }
 
     private fun initView(root: View?) {
@@ -157,7 +161,7 @@ class FoodDetailFragment : Fragment() {
 
         val itemView = LayoutInflater.from(context).inflate(R.layout.layout_rating_comment, null)
 
-        val ratingBar = itemView.findViewById<RatingBar>(R.id.ratingBar)
+        val ratingBar = itemView.findViewById<RatingBar>(R.id.rating_bar)
         val edit_comment = itemView.findViewById<EditText>(R.id.edit_comment)
 
         builder.setView(itemView)
