@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_food_detail"
-        android:name="com.ganarstudio.orderfoodappkotlin.ui.fooddetail.FoodDetailFragment"
+        android:name="com.ganarstudio.orderfoodappkotlin.ui.fooddetail.CommentFragment"
         android:label="@string/menu_food_detail"
         tools:layout="@layout/fragment_food_detail" />
 

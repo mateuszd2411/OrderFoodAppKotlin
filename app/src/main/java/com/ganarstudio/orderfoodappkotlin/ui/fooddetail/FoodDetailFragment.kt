@@ -19,12 +19,11 @@ import com.ganarstudio.orderfoodappkotlin.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 import dmax.dialog.SpotsDialog
-import kotlinx.android.synthetic.main.fragment_food_detail.*
 import java.lang.StringBuilder
 
 class FoodDetailFragment : Fragment() {
 
-    private lateinit var foodDetailViewModel: FoodDetailViewModel
+    private lateinit var foodDetailViewModel: CommentViewModel
 
     private var img_food: ImageView? = null
     private var btnCart: CounterFab? = null
@@ -45,7 +44,7 @@ class FoodDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         foodDetailViewModel =
-            ViewModelProviders.of(this).get(FoodDetailViewModel::class.java)
+            ViewModelProviders.of(this).get(CommentViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_food_detail, container, false)
         initView(root)
 
