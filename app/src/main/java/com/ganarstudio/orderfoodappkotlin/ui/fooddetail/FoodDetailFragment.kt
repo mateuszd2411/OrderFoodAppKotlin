@@ -48,13 +48,13 @@ class FoodDetailFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_food_detail, container, false)
         initView(root)
 
-        foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
+        /*foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
             displayInfo(it)
         })
 
         foodDetailViewModel.getMutableLiveDataComment().observe(viewLifecycleOwner, Observer {
             submitRatingToFirebase(it)
-        })
+        })*/
         return root
     }
 
@@ -110,7 +110,7 @@ class FoodDetailFragment : Fragment() {
                                 waitingDialog!!.dismiss()
                                 if (task.isSuccessful) {
                                     Common.foodSelected = foodModel
-                                    foodDetailViewModel!!.setFoodModel(foodModel)
+//                                    foodDetailViewModel!!.setFoodModel(foodModel)
                                     Toast.makeText(context!!,"Thank you",Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -151,6 +151,10 @@ class FoodDetailFragment : Fragment() {
         btnRating!!.setOnClickListener {
             showDialogRating()
         }
+        btnShowComment!!.setOnClickListener {
+            val commentFragment = CommentFragment.getInstance()
+            commentFragment.show(requireActivity().supportFragmentManager,"CommentFragment")
+        }
     }
 
     private fun showDialogRating() {
@@ -177,7 +181,7 @@ class FoodDetailFragment : Fragment() {
             serverTimeStamp["timeStamp"] = ServerValue.TIMESTAMP
             commentModel.commentTimeStamp = (serverTimeStamp)
 
-            foodDetailViewModel!!.setCommentModel(commentModel)
+//            foodDetailViewModel!!.setCommentModel(commentModel)
         }
 
         val dialog = builder.create()

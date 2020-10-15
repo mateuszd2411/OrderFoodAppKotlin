@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ganarstudio.orderfoodappkotlin.Adapter.MyCommentAdapter
 import com.ganarstudio.orderfoodappkotlin.Callback.ICommentCallBack
 import com.ganarstudio.orderfoodappkotlin.Common.Common
 import com.ganarstudio.orderfoodappkotlin.Model.CommentModel
@@ -45,6 +48,10 @@ class CommentFragment : BottomSheetDialogFragment(), ICommentCallBack {
         val itemView = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_comment_fragment, container, false)
         initViews(itemView)
         loadCommentFromFirebase()
+        commentViewModel!!.mutableLiveDataCommentList.observe(this,Observer{commentList->
+            val  adapter = MyCommentAdapter(requireContext(), commentList)
+            recycyler_comment!!.adapter = adapter
+        })
         return itemView
     }
 
@@ -86,12 +93,23 @@ class CommentFragment : BottomSheetDialogFragment(), ICommentCallBack {
 
 
     override fun onCommentLoadSuccess(commentList: List<CommentModel>) {
-
+        dialog!!.dismiss()
+        commentViewModel!!.setCommentList(commentList)
     }
 
     override fun onCommentLoadFailed(message: String) {
-
+        Toast.makeText(requireContext(), "" + message, Toast.LENGTH_SHORT).show()
+        dialog!!.dismiss()
     }
 
+    companion object {
+        private var instance: CommentFragment? = null
+
+        fun getInstance(): CommentFragment {
+            if (instance == null)
+                instance = CommentFragment()
+            return instance!!
+        }
+    }
 
 }
