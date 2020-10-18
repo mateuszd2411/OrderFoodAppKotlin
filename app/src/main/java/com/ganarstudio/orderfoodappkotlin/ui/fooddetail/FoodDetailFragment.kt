@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.andremion.counterfab.CounterFab
 import com.bumptech.glide.Glide
@@ -20,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.*
 import dmax.dialog.SpotsDialog
 import java.lang.StringBuilder
+import com.ganarstudio.orderfoodappkotlin.ui.fooddetail.FoodDetailViewModel as FoodDetailViewModel1
 
 class FoodDetailFragment : Fragment() {
 
@@ -30,7 +32,7 @@ class FoodDetailFragment : Fragment() {
     private var btnRating: FloatingActionButton? = null
     private var food_name: TextView? = null
     private var food_description: TextView? = null
-    //private var food_price: TextView? = null
+    private var food_price: TextView? = null
     private var number_button: ElegantNumberButton? = null
     private var ratingBar: RatingBar? = null
     private var btnShowComment: Button? = null
@@ -44,17 +46,17 @@ class FoodDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         foodDetailViewModel =
-            ViewModelProviders.of(this).get(CommentViewModel::class.java)
+            ViewModelProviders.of(this).get(FoodDetailViewModel1::class.java)
         val root = inflater.inflate(R.layout.fragment_food_detail, container, false)
         initView(root)
 
-        /*foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
+        foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
             displayInfo(it)
         })
 
         foodDetailViewModel.getMutableLiveDataComment().observe(viewLifecycleOwner, Observer {
             submitRatingToFirebase(it)
-        })*/
+        })
         return root
     }
 
@@ -110,7 +112,7 @@ class FoodDetailFragment : Fragment() {
                                 waitingDialog!!.dismiss()
                                 if (task.isSuccessful) {
                                     Common.foodSelected = foodModel
-//                                    foodDetailViewModel!!.setFoodModel(foodModel)
+                                    foodDetailViewModel!!.setFoodModel(foodModel)
                                     Toast.makeText(context!!,"Thank you",Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -127,7 +129,7 @@ class FoodDetailFragment : Fragment() {
         Glide.with(requireContext()).load(it!!.image).into(img_food!!)
         food_name!!.text = StringBuilder(it!!.name!!)
         food_description!!.text = StringBuilder(it!!.description!!)
-        //food_price!!.text = StringBuilder(it!!.price!!.toString())
+        food_price!!.text = StringBuilder(it!!.price!!.toString())
 
         ratingBar!!.rating = it!!.ratingValue.toFloat()
     }
@@ -140,7 +142,7 @@ class FoodDetailFragment : Fragment() {
         img_food = root!!.findViewById(R.id.img_food) as ImageView
         btnRating = root!!.findViewById(R.id.btn_rating) as FloatingActionButton
         food_name = root!!.findViewById(R.id.food_name) as TextView
-//        food_price = root!!.findViewById(R.id.txt_food_price) as TextView
+        food_price = root!!.findViewById(R.id.txt_food_price) as TextView
         food_description = root!!.findViewById(R.id.food_description) as TextView
         number_button = root!!.findViewById(R.id.number_button) as ElegantNumberButton
         ratingBar = root!!.findViewById(R.id.ratingBar) as RatingBar
@@ -153,7 +155,7 @@ class FoodDetailFragment : Fragment() {
         }
         btnShowComment!!.setOnClickListener {
             val commentFragment = CommentFragment.getInstance()
-            commentFragment.show(requireActivity().supportFragmentManager,"CommentFragment")
+            commentFragment.show(activity!!.supportFragmentManager,"CommentFragment")
         }
     }
 
@@ -181,7 +183,7 @@ class FoodDetailFragment : Fragment() {
             serverTimeStamp["timeStamp"] = ServerValue.TIMESTAMP
             commentModel.commentTimeStamp = (serverTimeStamp)
 
-//            foodDetailViewModel!!.setCommentModel(commentModel)
+            foodDetailViewModel!!.setCommentModel(commentModel)
         }
 
         val dialog = builder.create()

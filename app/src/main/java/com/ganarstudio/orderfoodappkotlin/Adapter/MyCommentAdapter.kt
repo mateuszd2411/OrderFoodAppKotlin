@@ -42,7 +42,7 @@ class MyCommentAdapter(internal var context: Context,
             txt_comment = itemView.findViewById(R.id.txt_comment) as TextView
             txt_comment_name = itemView.findViewById(R.id.txt_comment_name) as TextView
             txt_comment_date = itemView.findViewById(R.id.txt_comment_date) as TextView
-            rating_bar = itemView.findViewById(R.id.ratingBar) as RatingBar
+            rating_bar = itemView.findViewById(R.id.rating_bar) as RatingBar
         }
 
     }
