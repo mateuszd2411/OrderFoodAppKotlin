@@ -25,7 +25,7 @@ import com.ganarstudio.orderfoodappkotlin.ui.fooddetail.FoodDetailViewModel as F
 
 class FoodDetailFragment : Fragment() {
 
-    private lateinit var foodDetailViewModel: CommentViewModel
+    private lateinit var foodDetailViewModel: FoodDetailViewModel1
 
     private var img_food: ImageView? = null
     private var btnCart: CounterFab? = null
@@ -36,6 +36,7 @@ class FoodDetailFragment : Fragment() {
     private var number_button: ElegantNumberButton? = null
     private var ratingBar: RatingBar? = null
     private var btnShowComment: Button? = null
+    private var rdi_group_size:RadioGroup?= null
 
     private var waitingDialog: AlertDialog? = null
 
@@ -50,11 +51,11 @@ class FoodDetailFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_food_detail, container, false)
         initView(root)
 
-        foodDetailViewModel.getMutableLiveDataFood().observe(viewLifecycleOwner, Observer {
+        foodDetailViewModel.getMutableLiveDataFood().observe(this, Observer {
             displayInfo(it)
         })
 
-        foodDetailViewModel.getMutableLiveDataComment().observe(viewLifecycleOwner, Observer {
+        foodDetailViewModel.getMutableLiveDataComment().observe(this, Observer {
             submitRatingToFirebase(it)
         })
         return root
@@ -132,6 +133,16 @@ class FoodDetailFragment : Fragment() {
         food_price!!.text = StringBuilder(it!!.price!!.toString())
 
         ratingBar!!.rating = it!!.ratingValue.toFloat()
+
+        //Set size
+        for (sizeModel in it!!.size) {
+            val radioButton = RadioButton(context)
+            radioButton.setOnCheckedChangeListener{compoundButton, b ->
+                if(b)
+                    Common.foodSelected!!.userSelectedSize = sizeModel
+
+            }
+        }
     }
 
     private fun initView(root: View?) {
@@ -147,6 +158,7 @@ class FoodDetailFragment : Fragment() {
         number_button = root!!.findViewById(R.id.number_button) as ElegantNumberButton
         ratingBar = root!!.findViewById(R.id.ratingBar) as RatingBar
         btnShowComment = root!!.findViewById(R.id.btnShowComment) as Button
+        rdi_group_size = root!!.findViewById(R.id.rdi_group_size) as RadioGroup
 
 
         //Event
